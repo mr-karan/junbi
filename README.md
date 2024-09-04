@@ -15,7 +15,7 @@ Junbi (準備), meaning "preparation" or "readiness" in Japanese, is a powerful 
 Get your server up and running securely in minutes:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/mr-karan/junbi/main/setup.sh | bash
+curl -sSL https://raw.githubusercontent.com/mr-karan/junbi/main/junbi.sh | bash
 ```
 
 ⚠️ Always review scripts before running them with elevated privileges.
@@ -46,7 +46,7 @@ curl -sSL https://raw.githubusercontent.com/mr-karan/junbi/main/setup.sh | bash
    ```
 3. Run the setup script:
    ```
-   ./setup.sh
+   ./junbi.sh
    ```
 4. Follow the interactive prompts to customize your setup.
 
