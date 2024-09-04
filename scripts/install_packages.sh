@@ -25,3 +25,6 @@ apt-get install -y "${PACKAGES[@]}"
 log "$GREEN" "Installing Zsh and Oh My Zsh..."
 su - "$NEW_USER" -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
 chsh -s $(which zsh) "$NEW_USER"
+
+# Set the Zsh theme
+sed -i 's/ZSH_THEME=".*"/ZSH_THEME="candy"/' /home/$NEW_USER/.zshrc

@@ -28,5 +28,8 @@ source /root/scripts/configure_sysctl.sh
 source /root/scripts/setup_security.sh
 source /root/scripts/cleanup.sh
 
+log "$GREEN" "Setting timezone to $TIMEZONE..."
+timedatectl set-timezone "$TIMEZONE"
+
 log "$GREEN" "Junbi server hardening complete. The server will now reboot."
 reboot

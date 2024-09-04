@@ -6,7 +6,7 @@ cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 configure_ssh() {
     local setting=$1
     local value=$2
-    sed -i "s/^#?${setting} .*/${setting} ${value}/" /etc/ssh/sshd_config
+    sed -i "/^#*${setting}/c\\${setting} ${value}" /etc/ssh/sshd_config
 }
 
 configure_ssh "Port" "$SSH_PORT"

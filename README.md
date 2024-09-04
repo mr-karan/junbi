@@ -12,24 +12,32 @@ Junbi (準備), meaning "preparation" or "readiness" in Japanese, is a powerful 
 
 ## 🚀 Quick Start
 
-To set up your server securely:
+To set up your server securely, follow these steps on your local machine:
 
-1. Download the script:
+1. Download the Junbi script:
    ```bash
    curl -O https://raw.githubusercontent.com/mr-karan/junbi/main/junbi.sh
    ```
 
-2. Make it executable:
+2. Make the script executable:
    ```bash
    chmod +x junbi.sh
    ```
 
 3. Run the script:
    ```bash
-   sudo ./junbi.sh
+   ./junbi.sh
    ```
 
-⚠️ Always review scripts before running them with elevated privileges.
+This script will guide you through the setup process, asking for necessary information about your remote server. It will then connect to your server and perform the hardening and setup tasks.
+
+⚠️ Important: Run this script on your local machine, not on the remote server you want to configure.
+
+⚠️ Always review scripts before running them with elevated privileges. You can inspect the script content with:
+
+```bash
+cat junbi.sh
+```
 
 ## 🛠️ What Junbi Sets Up
 

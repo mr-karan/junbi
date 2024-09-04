@@ -1,26 +1,60 @@
 #!/bin/bash
 set -e
 
-# Function to download a file silently
-download_file() {
+# Function to get a file (local or remote)
+get_file() {
     local file=$1
-    local url="https://raw.githubusercontent.com/mr-karan/junbi/main/$file"
-    mkdir -p "$(dirname "$file")"
-    curl -sSL "$url" -o "$file"
+    local remote_url="https://raw.githubusercontent.com/mr-karan/junbi/main/$file"
+    
+    # Create the directory structure in the temp directory
+    mkdir -p "$(dirname "$temp_dir/$file")"
+    
+    # Check if the file exists in the current directory or its subdirectories
+    if [ -f "$file" ] || [ -f "$(basename "$file")" ]; then
+        echo "Using local file: $file"
+        if [ -f "$file" ]; then
+            cp "$file" "$temp_dir/$file"
+        else
+            cp "$(basename "$file")" "$temp_dir/$file"
+        fi
+    else
+        echo "Downloading: $file"
+        if ! curl -sSL "$remote_url" -o "$temp_dir/$file"; then
+            echo "Failed to get $file"
+            return 1
+        fi
+    fi
 }
 
 # Create a temporary directory
 temp_dir=$(mktemp -d)
+echo "Created temporary directory: $temp_dir"
+
+# List of required scripts
+SCRIPTS=(
+    "scripts/main.sh"
+    "scripts/base.sh"
+    "scripts/create_user.sh"
+    "scripts/configure_ssh.sh"
+    "scripts/install_packages.sh"
+    "scripts/install_docker.sh"
+    "scripts/configure_sysctl.sh"
+    "scripts/setup_security.sh"
+    "scripts/cleanup.sh"
+)
+
+# Get all required scripts
+for script in "${SCRIPTS[@]}"; do
+    get_file "$script"
+done
+
+# Change to the temporary directory
 cd "$temp_dir"
 
-# Download all required scripts silently
-download_file "scripts/base.sh"
-download_file "scripts/user.sh"
-download_file "scripts/ssh.sh"
-download_file "scripts/packages.sh"
-download_file "scripts/docker.sh"
-download_file "scripts/sysctl.sh"
-download_file "scripts/cleanup.sh"
+# echo "All scripts downloaded. Contents of temp directory:"
+# ls -lR
+
+echo "Running setup..."
 
 # Now source and run the scripts
 source scripts/base.sh
@@ -81,9 +115,9 @@ if ! confirm "Does this look correct? Proceed with server setup?"; then
 fi
 
 # Copy scripts to the server
-scp -r scripts root@$SERVER_IP:/root/
+scp -r scripts/* root@$SERVER_IP:/root/scripts/
 
-# Execute the hardening script on the server
+# Execute the main script on the server
 ssh -t root@$SERVER_IP "bash /root/scripts/main.sh '$TIMEZONE' '$GITHUB_URL' '$NEW_USER' '$SSH_PORT' '$SSH_PUBLIC_KEY'"
 
 print_header "Setup Complete"
