@@ -5,14 +5,18 @@ set -e
 download_file() {
     local file=$1
     local url="https://raw.githubusercontent.com/mr-karan/junbi/main/$file"
-    if ! curl -sSL "$url" -o "$file"; then
+    echo "Downloading $file from $url"
+    mkdir -p "$(dirname "$file")"
+    if ! curl -SL "$url" -o "$file"; then
         echo "Failed to download $file"
         return 1
     fi
+    echo "Successfully downloaded $file"
 }
 
 # Create a temporary directory
 temp_dir=$(mktemp -d) || { echo "Failed to create temp directory"; exit 1; }
+echo "Created temporary directory: $temp_dir"
 cd "$temp_dir" || { echo "Failed to change to temp directory"; exit 1; }
 
 echo "Downloading required scripts..."
@@ -25,6 +29,9 @@ download_file "scripts/packages.sh"
 download_file "scripts/docker.sh"
 download_file "scripts/sysctl.sh"
 download_file "scripts/cleanup.sh"
+
+echo "All scripts downloaded. Contents of temp directory:"
+ls -lR
 
 echo "Running setup..."
 
