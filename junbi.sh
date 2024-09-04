@@ -1,16 +1,21 @@
 #!/bin/bash
-set -eo pipefail
+set -e
 
 # Function to download a file
 download_file() {
     local file=$1
     local url="https://raw.githubusercontent.com/mr-karan/junbi/main/$file"
-    curl -sSL "$url" -o "$file"
+    if ! curl -sSL "$url" -o "$file"; then
+        echo "Failed to download $file"
+        return 1
+    fi
 }
 
 # Create a temporary directory
-temp_dir=$(mktemp -d)
-cd "$temp_dir"
+temp_dir=$(mktemp -d) || { echo "Failed to create temp directory"; exit 1; }
+cd "$temp_dir" || { echo "Failed to change to temp directory"; exit 1; }
+
+echo "Downloading required scripts..."
 
 # Download all required scripts
 download_file "scripts/base.sh"
@@ -21,7 +26,9 @@ download_file "scripts/docker.sh"
 download_file "scripts/sysctl.sh"
 download_file "scripts/cleanup.sh"
 
-# Now source and run the scripts as before
+echo "Running setup..."
+
+# Now source and run the scripts
 source scripts/base.sh
 
 print_header "Junbi Server Setup"
@@ -93,5 +100,7 @@ log "$YELLOW" "ssh -p $SSH_PORT $NEW_USER@$SERVER_IP"
 echo -e "${GREEN}Junbi server setup complete. Have a great day!${NC}"
 
 # Clean up
-cd ..
+cd .. || true
 rm -rf "$temp_dir"
+
+echo "Setup complete!"
