@@ -1,27 +1,19 @@
 #!/bin/bash
 set -e
 
-# Function to download a file
+# Function to download a file silently
 download_file() {
     local file=$1
     local url="https://raw.githubusercontent.com/mr-karan/junbi/main/$file"
-    echo "Downloading $file from $url"
     mkdir -p "$(dirname "$file")"
-    if ! curl -SL "$url" -o "$file"; then
-        echo "Failed to download $file"
-        return 1
-    fi
-    echo "Successfully downloaded $file"
+    curl -sSL "$url" -o "$file"
 }
 
 # Create a temporary directory
-temp_dir=$(mktemp -d) || { echo "Failed to create temp directory"; exit 1; }
-echo "Created temporary directory: $temp_dir"
-cd "$temp_dir" || { echo "Failed to change to temp directory"; exit 1; }
+temp_dir=$(mktemp -d)
+cd "$temp_dir"
 
-echo "Downloading required scripts..."
-
-# Download all required scripts
+# Download all required scripts silently
 download_file "scripts/base.sh"
 download_file "scripts/user.sh"
 download_file "scripts/ssh.sh"
@@ -29,11 +21,6 @@ download_file "scripts/packages.sh"
 download_file "scripts/docker.sh"
 download_file "scripts/sysctl.sh"
 download_file "scripts/cleanup.sh"
-
-echo "All scripts downloaded. Contents of temp directory:"
-ls -lR
-
-echo "Running setup..."
 
 # Now source and run the scripts
 source scripts/base.sh
@@ -107,7 +94,7 @@ log "$YELLOW" "ssh -p $SSH_PORT $NEW_USER@$SERVER_IP"
 echo -e "${GREEN}Junbi server setup complete. Have a great day!${NC}"
 
 # Clean up
-cd .. || true
+cd ..
 rm -rf "$temp_dir"
 
 echo "Setup complete!"

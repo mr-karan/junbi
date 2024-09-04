@@ -12,11 +12,22 @@ Junbi (準備), meaning "preparation" or "readiness" in Japanese, is a powerful 
 
 ## 🚀 Quick Start
 
-Get your server up and running securely in minutes:
+To set up your server securely:
 
-```bash
-curl -sSL https://raw.githubusercontent.com/mr-karan/junbi/main/junbi.sh | bash
-```
+1. Download the script:
+   ```bash
+   curl -O https://raw.githubusercontent.com/mr-karan/junbi/main/junbi.sh
+   ```
+
+2. Make it executable:
+   ```bash
+   chmod +x junbi.sh
+   ```
+
+3. Run the script:
+   ```bash
+   sudo ./junbi.sh
+   ```
 
 ⚠️ Always review scripts before running them with elevated privileges.
 
@@ -36,9 +47,11 @@ curl -sSL https://raw.githubusercontent.com/mr-karan/junbi/main/junbi.sh | bash
 
 ## 📚 Manual Setup
 
+For those who prefer a step-by-step approach:
+
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/junbi.git
+   git clone https://github.com/mr-karan/junbi.git
    ```
 2. Navigate to the Junbi directory:
    ```
