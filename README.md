@@ -1,85 +1,61 @@
-# Junbi - Server Setup and Hardening Tool
+# Junbi
 
-<p align="center">
-  <img src="/docs/logo.png" alt="Junbi Logo" width="200"/>
-</p>
+**Interactive server setup for Ubuntu with sensible security defaults.**
 
-<p align="center">
-  <strong>Prepare your server with confidence</strong>
-</p>
+Junbi (準備 - "preparation" in Japanese) is a simple tool that configures a fresh Ubuntu server with proper security, Docker, and essential tools through an interactive wizard.
 
-Junbi (準備), meaning "preparation" or "readiness" in Japanese, is a powerful and modular server setup and hardening tool. It's designed to quickly configure a secure, production-ready Ubuntu server with just a few commands.
+## Why Junbi?
 
-## 🚀 Quick Start
+Setting up a new server properly is tedious:
+- Creating users, configuring SSH, setting up firewalls
+- Installing Docker, configuring auto-updates, optimizing sysctls
+- Doing it all securely without missing critical steps
 
-To set up your server securely, follow these steps on your local machine:
+Junbi handles all of this in one interactive session with sensible defaults.
 
-1. Download the Junbi script:
-   ```bash
-   curl -O https://raw.githubusercontent.com/mr-karan/junbi/main/junbi.sh
-   ```
-
-2. Make the script executable:
-   ```bash
-   chmod +x junbi.sh
-   ```
-
-3. Run the script:
-   ```bash
-   ./junbi.sh
-   ```
-
-This script will guide you through the setup process, asking for necessary information about your remote server. It will then connect to your server and perform the hardening and setup tasks.
-
-⚠️ Important: Run this script on your local machine, not on the remote server you want to configure.
-
-⚠️ Always review scripts before running them with elevated privileges. You can inspect the script content with:
+## Quick Start
 
 ```bash
-cat junbi.sh
+# Run on your local machine (not on the server)
+curl -sSL https://raw.githubusercontent.com/mr-karan/junbi/main/junbi.sh | bash
+
+# Or download and run manually
+curl -O https://raw.githubusercontent.com/mr-karan/junbi/main/junbi.sh
+chmod +x junbi.sh
+./junbi.sh
 ```
 
-## 🛠️ What Junbi Sets Up
+## What Gets Configured
 
-- A new sudo user with SSH key authentication
-- Hardened SSH configuration (no root login, no password authentication)
-- Essential system packages (vim, curl, etc.)
-- Docker and Docker Compose
-- Optimized sysctl settings for better performance and security
-- Unattended security updates
+**Security essentials** (always applied):
+- New sudo user with SSH key authentication
+- SSH hardening (custom port, no root login, no passwords)
+- Basic firewall rules
 
-## 🔧 Requirements
+**Optional components** (you choose):
+- Docker & Docker Compose
+- UFW Firewall & Fail2ban
+- Monitoring tools (htop, btop, ncdu, glances)
+- Zsh + Oh My Zsh
+- Development tools
+- Auto-updates
+- System optimization
 
-- A fresh Ubuntu server (tested on 24.04 LTS and later)
-- Root SSH access to the server
+## How It Works
 
-## 📚 Manual Setup
+1. **Run locally** - Execute junbi.sh on your machine
+2. **Interactive wizard** - Answer a few questions (server IP, username, SSH keys)
+3. **Choose components** - Select what to install (Docker, monitoring, etc.)
+4. **Automatic setup** - Junbi connects to your server and configures everything
+5. **Secure access** - Connect with `ssh -p 2222 username@server-ip`
 
-For those who prefer a step-by-step approach:
+## Requirements
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/mr-karan/junbi.git
-   ```
-2. Navigate to the Junbi directory:
-   ```
-   cd junbi
-   ```
-3. Run the setup script:
-   ```
-   ./junbi.sh
-   ```
-4. Follow the interactive prompts to customize your setup.
+- **Local**: Any system with curl and bash
+- **Server**: Ubuntu 24.04+ with root SSH access
+- **Network**: SSH connectivity to the server
 
-## 🛡️ Security Note
+## License
 
-Junbi significantly improves your server's security posture, but it's not a silver bullet. Always follow security best practices, keep your systems updated, and regularly audit your server's configuration.
-
-## 🤝 Contributing
-
-Contributions are welcome! Whether it's bug reports, feature requests, or code contributions, please feel free to reach out or submit a pull request.
-
-## 📜 License
-
-Junbi is open-source software licensed under the MIT license.
+MIT - see [LICENSE](LICENSE)
 
