@@ -1,6 +1,10 @@
-# Junbi
-
-**Interactive server setup for Ubuntu with sensible security defaults.**
+<div align="center">
+  <img src="docs/logo.png" alt="Junbi Logo" width="200">
+  
+  # Junbi
+  
+  **Interactive server setup for Ubuntu with sensible security defaults.**
+</div>
 
 Junbi (準備 - "preparation" in Japanese) is a simple tool that configures a fresh Ubuntu server with proper security, Docker, and essential tools through an interactive wizard.
 
