@@ -168,16 +168,21 @@ run_wizard() {
         component_confirm=$(gum choose "✅ Confirm selection" "🔄 Change components")
         if [ "$component_confirm" = "🔄 Change components" ]; then
             # Go back to component selection
-            FEATURES=$(gum choose --no-limit \
-                $(echo "$FEATURES" | while IFS= read -r line; do echo "--selected=$line"; done) \
-                "Docker & Docker Compose" \
-                "Firewall (UFW)" \
-                "Fail2ban protection" \
-                "Monitoring tools (htop, btop, ncdu, glances)" \
-                "Zsh + Oh My Zsh" \
-                "Development tools (git, build-essential, vim)" \
-                "Auto-updates" \
-                "System optimization")
+            # Build the selected args properly
+            selected_args=""
+            while IFS= read -r line; do
+                [ -n "$line" ] && selected_args="$selected_args --selected=\"$line\""
+            done <<< "$FEATURES"
+            
+            eval "FEATURES=\$(gum choose --no-limit $selected_args \
+                \"Docker & Docker Compose\" \
+                \"Firewall (UFW)\" \
+                \"Fail2ban protection\" \
+                \"Monitoring tools (htop, btop, ncdu, glances)\" \
+                \"Zsh + Oh My Zsh\" \
+                \"Development tools (git, build-essential, vim)\" \
+                \"Auto-updates\" \
+                \"System optimization\")"
             echo
             echo "Updated selection:"
             echo "$FEATURES" | sed 's/^/  ✓ /'
